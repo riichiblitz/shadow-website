@@ -27,7 +27,7 @@ var status = "";
 var lobby = "-";
 var nextTime = 0;
 var round = 0;
-var knownStatuses = ["announce", "registration"]; //, "wait", "playpart", "playall", "pause", "end"
+var knownStatuses = ["announce", "registration", "wait", "playpart", "playall", "pause", "end"]; //
 
 var winds = ["東", "南", "西", "北"];
 var tours = ["I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"];
@@ -307,23 +307,30 @@ function updateViewport() {
 }
 
 function apply() {
-	$.ajax({
+  $.ajax({
 		type: "POST",
-		data: JSON.stringify({ name: $('#tenhou_nick').val(), contacts: $('#contacts').val(), notify: $('#notify').is(':checked') ? 1 : 0, anonymous: $('#anonymous').is(':checked') ? 1 : 0, news: $('#news').is(':checked') ? 1 : 0 }),
-		url: "../api/apply"
-	}).done(function(data) {
-		$(".reg_message_network_error").hide(500);
-		$(".register_form").hide(500);
-		if (data.status === "ok") {
-			$(".reg_message_ok").show(500);
-		} else {
-			$(".reg_message_error").show(500);
-		}
-		updateApplications();
-	}).fail(function() {
-	    $(".reg_message_error").hide(500);
-		$(".reg_message_network_error").show(500);
-    });
+		data: JSON.stringify({ name: $('#tenhou_nick').val(), contacts: $('#contacts').val(), notify: 0, anonymous: 0, news: 0 }),
+		url: "http://blitz-riichi.rhcloud.com/api/apply"
+	}).always(function() {
+    $.ajax({
+  		type: "POST",
+  		data: JSON.stringify({ name: $('#tenhou_nick').val(), contacts: $('#contacts').val(), notify: $('#notify').is(':checked') ? 1 : 0, anonymous: $('#anonymous').is(':checked') ? 1 : 0, news: $('#news').is(':checked') ? 1 : 0 }),
+  		url: "../api/apply"
+  	}).done(function(data) {
+  		$(".reg_message_network_error").hide(500);
+  		$(".register_form").hide(500);
+  		if (data.status === "ok") {
+  			$(".reg_message_ok").show(500);
+  		} else {
+  			$(".reg_message_error").show(500);
+  		}
+  		updateApplications();
+  	}).fail(function() {
+  	    $(".reg_message_error").hide(500);
+  		$(".reg_message_network_error").show(500);
+      });
+	});
+
 }
 
 function replay() {
