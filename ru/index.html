@@ -8,7 +8,7 @@
   <title>Теневая Лига</title>
   <link rel="stylesheet" type="text/css" href="../main.css?version=1">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-  <script src="../main.js?version=3"></script>
+  <script src="../main.js?version=4"></script>
 </head>
 
 <body>
@@ -19,13 +19,14 @@
   <h1 class="com">Теневая Лига</h1>
   <h2 class="com">Первый индивидуальный отборочный турнир</h2>
 
-  <div class="wait"><h3>Ожидаем начала турнира</h3></div>
+  <div class="wait"><h3>Ожидаем начала третьего этапа</h3></div>
   <div class="playp"><h3>Идёт запуск столов, не покидайте лобби</h3></div>
+  <div class="wait playp playa pause"><h3>Командные этапы пройдут без умы и оки</h3></div>
   <div class="playa"><h3>Идут игры текущего тура</h3></div>
   <div class="pause"><h3>Перерыв</h3></div>
-  <div class="end"><h3>Турнир продолжится завтра, 26 февраля</h3></div>
+  <div class="end"><h3>Турнир завершён</h3></div>
 
-  <p class="end">Первые этапы завершены. Ждём всех завтра в 10:00 по Московскому времени.</p>
+  <p class="end">Результаты скоро будут опубликованы.</p>
 
   <div class="reg ann">
     <p class="rules reg ann">два дня, четыре этапа, двенадцать ханчанов</p>
@@ -41,10 +42,9 @@
   </div>
 
   <p class="com reg ann wait playp playa pause end"><a href="reglament.html">Полный регламент</a></p>
-  <p class="playp playa pause"><a href="totals.html">Предварительные результаты турнира</a></p>
   <p class="ann">Регистрация будет открыта 25 января!<br/></p>
 
-  <p class="reg">Регистрация закрыта. Ждём участников здесь после завершения риичи-блица.</p>
+  <p class="reg">Первые этапы пройдены. Ждём участников здесь в назначенное время для продолжения.</p>
 
   <p class="wait pause">Следующий тур начнётся в <a class="time"></a> МСК</p>
   <p class="wait playp playa pause">Ожидаем игроков в лобби <a target="_blank" class="lobby"></a></p>
@@ -71,8 +71,6 @@
 </div>
 
   <p class="playp playa pause"><a class="button" id="perform_filter">Показывать только игры игрока:</a><input type="text" id="filter"/></p>
-
-  <p class="end">В таблице: позиция игрока в текущем этапе, его ник, сумма очков и среднее место</p>
 
   <table class="playp playa pause end info_table results_table">
   <tbody>

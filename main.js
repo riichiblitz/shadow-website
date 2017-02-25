@@ -30,7 +30,7 @@ var round = 0;
 var knownStatuses = ["announce", "registration", "wait", "playpart", "playall", "pause", "end"]; //
 
 var winds = ["東", "南", "西", "北"];
-var tours = ["東１", "東２", "東３", "東４", "南１", "南２", "南３", "南４", "西１", "西２", "西３", "西４", "北１", "北２", "北３", "北４"];
+var tours = ["１", "２", "３", "❶", "❷", "❸"];
 var maxRounds = 4;
 var playerPerTable = 4;
 
@@ -198,7 +198,7 @@ function updateResults() {
               var values = data.data.results[deltaCounter + counter + k];
               var name = values[2];
               var start = values[3];
-              var score = values[4];
+              var score = values[4] == null ? null : Number(values[4]);
               var url = data.data.replays[roundOfGame] != null ? data.data.replays[roundOfGame][board] : null;
               html+="<tr>";
               if (k == 0) {
@@ -209,16 +209,42 @@ function updateResults() {
               html += name == null ? "—" : name;
               if (url != null && name != null) html += "</a>";
 
-              html+="</td><td>";
-              if (start == null) {
-                html+="—";
-              } else if (score == null) {
-                html+="<font color=\"#909090\">" + start + "</font>";
-              } else {
-                html+=score;
-              }
               html+="</td>";
-
+			  var done = false;
+			  if (currentRound < 4) {
+				  if (k == 0 || k == 2) {
+					html+="<td rowspan=\"2\">";
+					if (score != null) {
+					  score += Number(data.data.results[deltaCounter + counter + k + 1][4]);
+					  score = score / 2;
+					}
+					done = true;
+				  }
+			  } else {
+				  if (k == 0) {
+					  html += "<td>";
+					  done = true;
+				  } else if (k == 1) {
+					  html += "<td rowspan=\"3\">";
+					  if (score != null) {
+					    score += Number(data.data.results[deltaCounter + counter + k + 1][4]);
+					    score += Number(data.data.results[deltaCounter + counter + k + 2][4]);
+					    score = Math.round(score / 3);
+					  }
+					  done = true;
+				  }
+			  }
+		      if (done) {
+					if (start == null) {
+					html+="—";
+				  } else if (score == null) {
+					html+="<font color=\"#909090\">" + start + "</font>";
+				  } else {
+					html+=score;
+				  }
+				  html+="</td>";  
+			  }
+             
               //html+="</td><td>" + (start == null ? "—" : start) + "</td>";
               //html+="</td><td>" + (score == null ? "—" : score) + "</td>";
               html+="</tr>";
@@ -238,36 +264,8 @@ function updateResults() {
 }
 
 function updateTotals() {
-  $.ajax({
-    url: "../api/totals"
-  }).done(function(data) {
-    if (data.status === "ok") {
-      $('.results_table').addClass("totals_table").attr("border", 1);
-      $('.results_table tr').remove();
-      //$item->name, $item->score, $item->place
-      var html = "";
-      for (var i = 0; i < data.data.length; i++) {
-        var values = data.data[i];
-        html += "<tr>";
-        var name = values[0];
-        var score = values[1];
-        var place = parseFloat(values[2]);
-
-        html+="<td>";
-        html+=(i+1);
-        html+="</td><td>";
-        html+=name;
-        html+="</td><td>";
-        html+=score;
-        html+="</td><td>";
-        html+=place;
-        html+="</td></tr>";
-      }
-      html+="</tr>";
-      //console.error(html);
-      $(".results_table > tbody").append(html);
-    }
-  });
+	$('.results_table').addClass("totals_table").attr("border", 0);
+    $('.results_table tr').remove();
 }
 
 function updateStatus() {
